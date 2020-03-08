@@ -69,9 +69,13 @@ class MainActivity : AppCompatActivity() {
         swipeRefresh.setOnRefreshListener {
 
             when (selectedTab) {
-                "Rock" -> getRock(viewModel!!)
-                "Classic" -> getClassic(viewModel!!)
-                "Pop" -> getPop(viewModel!!)
+                "Rock" -> {getRock(viewModel!!)
+                swipeRefresh.isRefreshing = false}
+                "Classic" -> {getClassic(viewModel!!)
+                    swipeRefresh.isRefreshing = false}
+                "Pop" -> {getPop(viewModel!!)
+                    swipeRefresh.isRefreshing = false}
+
                 else -> {
                 }
             }
