@@ -21,11 +21,11 @@ class MusicAdapter : RecyclerView.Adapter<MusicViewHolder>(){
                 false))
 
     override fun getItemCount(): Int {
-        return dataSet?.data?.size ?: 0
+        return dataSet?.results?.size ?: 0
     }
     override fun onBindViewHolder(holder: MusicViewHolder, position: Int) {
 
-        dataSet?.data?.get(position)?.let {
+        dataSet?.results?.get(position)?.let {
             holder.onBind(it)}
     }
 }

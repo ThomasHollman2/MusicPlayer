@@ -36,12 +36,32 @@ class MainActivity : AppCompatActivity() {
             }
         ).get(MusicViewModel::class.java)
 
+        tab_layout_genres.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            override fun onTabReselected(p0: TabLayout.Tab?) { }
+            override fun onTabUnselected(p0: TabLayout.Tab?) { }
+            override fun onTabSelected(p0: TabLayout.Tab?) {
+                when(p0!!.position){
+                    0 -> getRock(viewModel)
+                  //  1 -> populateClassicMusic(musicViewModel)
+                  //  2 -> populatePopMusic(musicViewModel)
+                    else->{ }
+                }
+            }
+        })
 
-        viewModel.getDataSet().observe(this,
-            Observer<MusicResponse> { t -> musicAdapter.dataSet = t })
+
         viewModel.getMusic()
 
+
     }
+    private fun getRock(viewModel: MusicViewModel){
+        viewModel.getDataSet().observe(this,
+            object: Observer<MusicResponse> {
+                override fun onChanged(t: MusicResponse?) {
+                    musicAdapter.dataSet = t
+                }
 
 
+            })
+    }
 }

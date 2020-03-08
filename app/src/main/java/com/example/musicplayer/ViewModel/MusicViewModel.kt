@@ -1,5 +1,6 @@
 package com.example.musicplayer.ViewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,6 +26,7 @@ class MusicViewModel(val baseUrl: String) : ViewModel() {
         this.musicDataSet.value = dataSet
 
     }
+
     fun getErrorMessage(errorMessage: String){
         dataErrorMessage.value = errorMessage
     }
