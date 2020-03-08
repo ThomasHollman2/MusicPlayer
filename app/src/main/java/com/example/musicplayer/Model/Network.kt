@@ -11,15 +11,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 class Network(val viewModel: MusicViewModel) {
-private val TAG = Network::class.java.simpleName
+    private val TAG = Network::class.java.simpleName
 
-    fun initRetrofit(baseUrl: String, okHttpClient: OkHttpClient){
+    fun initRetrofit(baseUrl: String, okHttpClient: OkHttpClient) {
         Log.d(TAG, "initRetrofit")
-        getApi(baseUrl,okHttpClient).getRock().enqueue(object  : Callback<MusicResponse> {
+        getApi(baseUrl, okHttpClient).getRock().enqueue(object : Callback<MusicResponse> {
             override fun onFailure(call: Call<MusicResponse>, t: Throwable) {
-             //   Log.d(TAG, "onFailure")
-                //viewModel.getErrorMessage(t.localizedMessage)
+                Log.d(TAG, "onFailure")
+                viewModel.getErrorMessage(t.localizedMessage)
             }
+
             override fun onResponse(
                 call: Call<MusicResponse>,
                 response: Response<MusicResponse>
@@ -29,37 +30,39 @@ private val TAG = Network::class.java.simpleName
         })
 
 
-    getApi(baseUrl,okHttpClient).getClassic().enqueue(object  : Callback<MusicResponse> {
-        override fun onFailure(call: Call<MusicResponse>, t: Throwable) {
-            //   Log.d(TAG, "onFailure")
-            //viewModel.getErrorMessage(t.localizedMessage)
-        }
-        override fun onResponse(
-            call: Call<MusicResponse>,
-            response: Response<MusicResponse>
-        ) {
-            response.body()?.let { viewModel.getClassicData(it) }
-        }
-    })
+        getApi(baseUrl, okHttpClient).getClassic().enqueue(object : Callback<MusicResponse> {
+            override fun onFailure(call: Call<MusicResponse>, t: Throwable) {
+                //   Log.d(TAG, "onFailure")
+                //viewModel.getErrorMessage(t.localizedMessage)
+            }
+
+            override fun onResponse(
+                call: Call<MusicResponse>,
+                response: Response<MusicResponse>
+            ) {
+                response.body()?.let { viewModel.getClassicData(it) }
+            }
+        })
 
 
-    getApi(baseUrl,okHttpClient).getPop().enqueue(object  : Callback<MusicResponse> {
-    override fun onFailure(call: Call<MusicResponse>, t: Throwable) {
-        //   Log.d(TAG, "onFailure")
-        //viewModel.getErrorMessage(t.localizedMessage)
+        getApi(baseUrl, okHttpClient).getPop().enqueue(object : Callback<MusicResponse> {
+            override fun onFailure(call: Call<MusicResponse>, t: Throwable) {
+                //   Log.d(TAG, "onFailure")
+                //viewModel.getErrorMessage(t.localizedMessage)
+            }
+
+            override fun onResponse(
+                call: Call<MusicResponse>,
+                response: Response<MusicResponse>
+            ) {
+                response.body()?.let { viewModel.getPopData(it) }
+            }
+        })
+
+
     }
-    override fun onResponse(
-        call: Call<MusicResponse>,
-        response: Response<MusicResponse>
-    ) {
-        response.body()?.let { viewModel.getPopData(it) }
-    }
-})
 
-
-}
-
-    fun getApi(url: String, okHttpClient: OkHttpClient): MusicApi{
+    fun getApi(url: String, okHttpClient: OkHttpClient): MusicApi {
 
         return Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
             .baseUrl(url).client(okHttpClient)

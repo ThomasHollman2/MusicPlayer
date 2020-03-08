@@ -12,10 +12,10 @@ interface DaoMusic {
     @Query("SELECT * FROM music_table")
     fun getRockMusic(): MusicResponse
 
-    @Query("SELECT * FROM music_table WHERE music_genre = classic")
+    @Query("SELECT * FROM music_table")
     fun getClassicMusic(): MusicResponse
 
-    @Query("SELECT * FROM music_table WHERE music_genre = pop")
+    @Query("SELECT * FROM music_table")
     fun getPopMusic(): MusicResponse
 
 

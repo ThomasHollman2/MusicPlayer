@@ -9,7 +9,7 @@ import okhttp3.Cache
 import okhttp3.OkHttpClient
 import java.util.*
 
-class MusicRepository(private val musicViewModel:  MusicViewModel) {
+class MusicRepository(private val musicViewModel: MusicViewModel) {
 
     val cacheSize = (5 * 1024 * 1024).toLong()
     lateinit var myCache: Cache

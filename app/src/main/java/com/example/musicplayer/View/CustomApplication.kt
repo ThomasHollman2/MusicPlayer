@@ -9,9 +9,10 @@ class CustomApplication : Application() {
         customApp = applicationContext as CustomApplication
 
     }
-    companion object{
-        private var customApp: CustomApplication?=null
-        fun getCustomApp(): CustomApplication{
+
+    companion object {
+        private var customApp: CustomApplication? = null
+        fun getCustomApp(): CustomApplication {
             return customApp!!
 
         }
