@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
 
 
     val musicAdapter: MusicAdapter by lazy { MusicAdapter() }
+    var selectedTab : String = "Rock"
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +30,8 @@ class MainActivity : AppCompatActivity() {
         recycler_view.layoutManager =
             LinearLayoutManager(this)
         recycler_view.adapter = musicAdapter
+
+
 
 
 
@@ -41,20 +45,35 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         ).get(MusicViewModel::class.java)
+
+
         getRock(viewModel)
+
         tab_layout_genres.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabReselected(p0: TabLayout.Tab?) { }
             override fun onTabUnselected(p0: TabLayout.Tab?) { }
             override fun onTabSelected(p0: TabLayout.Tab?) {
                 when(p0!!.position){
-                    0 -> getRock(viewModel)
-                    1 -> getClassic(viewModel)
-                    2 -> getPop(viewModel)
+                    0 -> {getRock(viewModel!!)
+                    selectedTab = "Rock"}
+                    1 -> {getClassic(viewModel!!)
+                    selectedTab = "Classic"}
+                    2 -> {getPop(viewModel!!)
+                    selectedTab = "Pop"}
                     else->{ }
                 }
             }
         })
+        swipeRefresh.setOnRefreshListener {
 
+            when (selectedTab) {
+                "Rock" -> getRock(viewModel!!)
+                "Classic" -> getClassic(viewModel!!)
+                "Pop" -> getPop(viewModel!!)
+                else -> {}
+            }
+
+        }
 
         viewModel.getMusic(this)
 
