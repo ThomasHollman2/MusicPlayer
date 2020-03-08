@@ -1,9 +1,11 @@
 package com.example.musicplayer.View
 
+import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +18,8 @@ import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity() {
 
+
+
     val musicAdapter: MusicAdapter by lazy { MusicAdapter() }
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +28,8 @@ class MainActivity : AppCompatActivity() {
         recycler_view.layoutManager =
             LinearLayoutManager(this)
         recycler_view.adapter = musicAdapter
+
+
 
 
         val viewModel = ViewModelProvider(
@@ -50,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         })
 
 
-        viewModel.getMusic()
+        viewModel.getMusic(this)
 
 
     }

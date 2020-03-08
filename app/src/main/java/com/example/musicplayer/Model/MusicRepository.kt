@@ -5,75 +5,40 @@ import android.net.ConnectivityManager
 import com.example.musicplayer.R
 import com.example.musicplayer.View.CustomApplication
 import com.example.musicplayer.ViewModel.MusicViewModel
+import okhttp3.Cache
+import okhttp3.OkHttpClient
 import java.util.*
 
 class MusicRepository(private val musicViewModel:  MusicViewModel) {
 
-    val daoMusic = MusicDatabase.getInstance(
-        CustomApplication.getCustomApp()).getDao()
-    val network : Network by lazy{
-        Network(musicViewModel)
-    }
-    //todo check for offline connection
-    //todo check for cache (10 minutes)
-    //todo retrieve data
+    val cacheSize = (5 * 1024 * 1024).toLong()
+    lateinit var myCache: Cache
 
-    /**
-     * return true if is Offline
-     * Return false if is Online
-     */
-    fun getOfflineMode(): Boolean{
-
-        val context: Context = CustomApplication.getCustomApp()
+    fun isOnline(): Boolean {
         val connectivityManager: ConnectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.activeNetworkInfo
-        return networkInfo.isConnected
-
+            CustomApplication.getCustomApp().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return connectivityManager?.activeNetworkInfo?.isConnectedOrConnecting() ?: false
     }
 
-    /**
-     * Return true if a network request <10 minutes
-     * Return false if network request >10 minutes
-     */
-    fun checkPreviousNetworkRequest() : Boolean {
-        return (Calendar.getInstance().timeInMillis - getSpTime()) < (1000 * 60 * 10)
-
-    }
-    private fun saveSpTime(){
-        CustomApplication.getCustomApp()
-            .getSharedPreferences(CustomApplication.getCustomApp().getString(R.string.TimeNetworkTracker),
-                Context.MODE_PRIVATE).edit().putLong(CustomApplication.getCustomApp()
-                .getString(R.string.LAST_NETWORK_REQUEST),
-                Calendar.getInstance().timeInMillis)
-            .commit()
-
-
-    }
-    private fun getSpTime(): Long =
-        CustomApplication.getCustomApp()
-            .getSharedPreferences(CustomApplication.getCustomApp().getString(R.string.TimeNetworkTracker),
-                Context.MODE_PRIVATE).getLong(CustomApplication.getCustomApp()
-                .getString(R.string.LAST_NETWORK_REQUEST),0)
-
-    fun getMusicData(){
-        if(getOfflineMode()){
-            //todo read from cache
-            if(checkPreviousNetworkRequest()){
-                //todo read from cache
-                val listEntities = daoMusic.getDataFromCache()
-                //todo parse the entities into movies poko
-
-              //  musicViewModel.getMusicData(MusicResponse())
-            }else{
-                musicViewModel.getErrorMessage("No Data")
-            }
-        }else{
-            if(checkPreviousNetworkRequest()){
-                //todo read from cache
-            }else{
-               // network.initRetrofit()
-            }
-        }
+    fun getMusic(baseUrl: String, context: Context) {
+        myCache = Cache(context.cacheDir, cacheSize)
+        val okHttpClient = OkHttpClient.Builder()
+            .cache(myCache)
+            .addInterceptor { chain ->
+                var request = chain.request()
+                request = if (isOnline())
+                    request.newBuilder().header(
+                        "MusicAppPlayer-Data-Cache",
+                        "public, max-age=" + 5
+                    ).build()
+                else
+                    request.newBuilder().header(
+                        "MusicAppPlayer-Data-Cache",
+                        "public, only-if-cached, max-stale=" + 60 * 10
+                    ).build()
+                chain.proceed(request)
+            }.build()
+        val network = Network(musicViewModel)
+        network.initRetrofit(baseUrl, okHttpClient)
     }
 }

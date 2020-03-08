@@ -1,9 +1,11 @@
 package com.example.musicplayer.ViewModel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.musicplayer.Model.MusicRepository
 import com.example.musicplayer.Model.MusicResponse
 import com.example.musicplayer.Model.Network
 
@@ -26,9 +28,9 @@ class MusicViewModel(val baseUrl: String) : ViewModel() {
     fun getErrorMessage(): LiveData<String> {
         return dataErrorMessage
     }
-    fun getMusic(){
-        val network = Network(this)
-        network.initRetrofit(baseUrl)
+    fun getMusic(context: Context){
+        val repo = MusicRepository(this)
+        repo.getMusic(baseUrl,context)
     }
     fun getRockData(dataSet: MusicResponse){
 

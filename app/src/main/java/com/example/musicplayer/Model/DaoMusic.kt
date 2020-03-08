@@ -10,7 +10,15 @@ interface DaoMusic {
     fun saveDataIntoCache(data: List<MusicEntitie>)
 
     @Query("SELECT * FROM music_table")
-    fun getDataFromCache(): List<MusicEntitie>
+    fun getRockMusic(): MusicResponse
+
+    @Query("SELECT * FROM music_table WHERE music_genre = classic")
+    fun getClassicMusic(): MusicResponse
+
+    @Query("SELECT * FROM music_table WHERE music_genre = pop")
+    fun getPopMusic(): MusicResponse
+
+
 
 
 }
