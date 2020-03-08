@@ -22,6 +22,7 @@ class MusicViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         tvTrackName.text = item.collectionName.toString()
         tvPrice.text = item.trackPrice.toString()
         Glide.with(itemView).load(item.artworkUrl60).into(ivArtwork)
+        itemView.setOnClickListener(
         object : View.OnClickListener{
             override fun onClick(v: View?) {
                 val intent : Intent = Intent(Intent.ACTION_VIEW)
@@ -29,5 +30,6 @@ class MusicViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 itemView.context.startActivity(intent)
             }
         }
+        )
     }
 }
