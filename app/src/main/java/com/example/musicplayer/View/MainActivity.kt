@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         ).get(MusicViewModel::class.java)
-
+        getRock(viewModel)
         tab_layout_genres.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabReselected(p0: TabLayout.Tab?) { }
             override fun onTabUnselected(p0: TabLayout.Tab?) { }
