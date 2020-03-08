@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MusicPlayer</string>
+    <string name="pop">Pop</string>
+    <string name="classic">Classic</string>
+    <string name="rock">Rock</string>
+    <string name="TimeNetworkTracker">TimeNetworkTracker</string>
+    <string name="LAST_NETWORK_REQUEST">LAST_NETWORK_REQUEST</string>
+</resources>
