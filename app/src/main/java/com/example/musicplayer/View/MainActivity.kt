@@ -42,8 +42,8 @@ class MainActivity : AppCompatActivity() {
             override fun onTabSelected(p0: TabLayout.Tab?) {
                 when(p0!!.position){
                     0 -> getRock(viewModel)
-                  //  1 -> populateClassicMusic(musicViewModel)
-                  //  2 -> populatePopMusic(musicViewModel)
+                    1 -> getClassic(viewModel)
+                    2 -> getPop(viewModel)
                     else->{ }
                 }
             }
@@ -55,7 +55,27 @@ class MainActivity : AppCompatActivity() {
 
     }
     private fun getRock(viewModel: MusicViewModel){
-        viewModel.getDataSet().observe(this,
+        viewModel.getRockDataSet().observe(this,
+            object: Observer<MusicResponse> {
+                override fun onChanged(t: MusicResponse?) {
+                    musicAdapter.dataSet = t
+                }
+
+
+            })
+    }
+    private fun getClassic(viewModel: MusicViewModel){
+        viewModel.getClassicDataSet().observe(this,
+            object: Observer<MusicResponse> {
+                override fun onChanged(t: MusicResponse?) {
+                    musicAdapter.dataSet = t
+                }
+
+
+            })
+    }
+    private fun getPop(viewModel: MusicViewModel){
+        viewModel.getPopDataSet().observe(this,
             object: Observer<MusicResponse> {
                 override fun onChanged(t: MusicResponse?) {
                     musicAdapter.dataSet = t

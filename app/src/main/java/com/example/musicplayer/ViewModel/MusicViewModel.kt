@@ -8,12 +8,20 @@ import com.example.musicplayer.Model.MusicResponse
 import com.example.musicplayer.Model.Network
 
 class MusicViewModel(val baseUrl: String) : ViewModel() {
-    private val musicDataSet: MutableLiveData<MusicResponse> = MutableLiveData()
+    private val rockDataSet: MutableLiveData<MusicResponse> = MutableLiveData()
+    private val classicDataSet: MutableLiveData<MusicResponse> = MutableLiveData()
+    private val popDataSet: MutableLiveData<MusicResponse> = MutableLiveData()
     private val dataErrorMessage: MutableLiveData<String> = MutableLiveData()
+    private val TAG = Network::class.java.simpleName
 
-    fun getDataSet(): LiveData<MusicResponse> {
-        return musicDataSet
-
+    fun getRockDataSet(): LiveData<MusicResponse>{
+        return rockDataSet
+    }
+    fun getPopDataSet(): LiveData<MusicResponse>{
+        return popDataSet
+    }
+    fun getClassicDataSet(): LiveData<MusicResponse>{
+        return classicDataSet
     }
     fun getErrorMessage(): LiveData<String> {
         return dataErrorMessage
@@ -22,8 +30,19 @@ class MusicViewModel(val baseUrl: String) : ViewModel() {
         val network = Network(this)
         network.initRetrofit(baseUrl)
     }
-    fun getMusicData(dataSet: MusicResponse){
-        this.musicDataSet.value = dataSet
+    fun getRockData(dataSet: MusicResponse){
+
+        this.rockDataSet.value = dataSet
+
+    }
+    fun getPopData(dataSet: MusicResponse){
+
+        this.popDataSet.value = dataSet
+
+    }
+    fun getClassicData(dataSet: MusicResponse){
+
+        this.classicDataSet.value = dataSet
 
     }
 

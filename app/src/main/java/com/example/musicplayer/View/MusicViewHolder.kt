@@ -19,6 +19,6 @@ class MusicViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         tvArtistName.text = item.artistName.toString()
         tvTrackName.text = item.collectionName.toString()
         tvPrice.text = item.trackPrice.toString()
-        Glide.with(itemView).load(item.artistName).into(ivArtwork)
+        Glide.with(itemView).load(item.artworkUrl60).into(ivArtwork)
     }
 }
